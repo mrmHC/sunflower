@@ -50,7 +50,7 @@ while [ "$1" != "" ]; do
   shift
 done
 
-source ./scripts/bamboo/bamboo_release_common.sh
+source ./app/bamboo_release_common.sh
 
 function getGradleVersionName(){
   gradleVersionNameTmp=$(grep -m1 ' VERSION_NAME = "[^0-9]*[0-9]*[^0-9]*[^0-9]*.[^0-9]*"' ${GRADLE_FILE})
