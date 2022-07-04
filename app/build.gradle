@@ -22,7 +22,7 @@ apply plugin: 'dagger.hilt.android.plugin'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
 
 def VERSION_CODE = 9999
-def VERSION_NAME = "157.0"
+def VERSION_NAME = "159.0"
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
