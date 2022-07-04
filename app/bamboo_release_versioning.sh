@@ -31,6 +31,10 @@ RELEASE_BRANCH=$(git branch --show-current)
 GRADLE_FILE="./app/build.gradle"
 VERSION_CODE=""
 
+if [[ "$RELEASE_BRANCH" =~ ^release/android_*$ ]]; then
+  exit 0
+fi
+
 while [ "$1" != "" ]; do
   PARAM=$(echo $1 | awk -F= '{print $1}')
   case ${PARAM} in
