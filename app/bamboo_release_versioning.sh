@@ -27,7 +27,7 @@ BASEDIR=$(git rev-parse --show-toplevel)
 pushd $BASEDIR
 
 DRY_RUN=""
-RELEASE_BRANCH=""
+RELEASE_BRANCH=$(git branch --show-current)
 GRADLE_FILE="./app/build.gradle"
 VERSION_CODE=""
 
