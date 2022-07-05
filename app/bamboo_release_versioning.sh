@@ -28,7 +28,7 @@ pushd $BASEDIR
 
 DRY_RUN=""
 RELEASE_BRANCH=$(git branch --show-current)
-GRADLE_FILE="./app/build.gradle"
+GRADLE_FILE="./KayakTravelApp/build.gradle"
 VERSION_CODE=""
 
 if [[ "$RELEASE_BRANCH" =~ ^release/android_*$ ]]; then
@@ -54,10 +54,10 @@ while [ "$1" != "" ]; do
   shift
 done
 
-source ./app/bamboo_release_common.sh
+source ./scripts/bamboo/bamboo_release_common.sh
 
 function getGradleVersionName(){
-  gradleVersionNameTmp=$(grep -m1 ' VERSION_NAME = "[^0-9]*[0-9]*[^0-9]*[^0-9]*.[^0-9]*"' ${GRADLE_FILE})
+  gradleVersionNameTmp=$(grep -m1 ' VERSION_NAME = "[0-9.]*"' ${GRADLE_FILE})
   gradleVersionNameTmp=${gradleVersionNameTmp#*VERSION_NAME = }
   gradleVersionName=$(echo $gradleVersionNameTmp | sed -e 's/^"//'  -e 's/"$//')
   echo "$gradleVersionName"
@@ -77,9 +77,9 @@ function bumpVersionCode() {
 
   echo "Bumping app version code from ${release_version_code} to ${VERSION_CODE} in ${RELEASE_BRANCH}..."
   if [[ "$OSTYPE" == "darwin"* ]]; then
-    ${DRY_RUN} sed -i '' "s/VERSION_CODE = [^0-9]*[0-9]*[^0-9]*[^0-9]*/VERSION_CODE = ${VERSION_CODE}/g" "${GRADLE_FILE}"
+    ${DRY_RUN} sed -i '' "s/VERSION_CODE = [0-9]*/VERSION_CODE = ${VERSION_CODE}/g" "${GRADLE_FILE}"
   else
-    ${DRY_RUN} sed -i "s/VERSION_CODE = [^0-9]*[0-9]*[^0-9]*[^0-9]*/VERSION_CODE = ${VERSION_CODE}/g" "${GRADLE_FILE}"
+    ${DRY_RUN} sed -i "s/VERSION_CODE = [0-9]*/VERSION_CODE = ${VERSION_CODE}/g" "${GRADLE_FILE}"
   fi
 
   if [ "$(shouldUpdateVersionName)" != "true" ]; then
@@ -100,9 +100,9 @@ function bumpVersionName() {
 
     echo "Bumping app version name to ${new_version_name} in ${RELEASE_BRANCH}..."
     if [[ "$OSTYPE" == "darwin"* ]]; then
-      ${DRY_RUN} sed -i '' "s/VERSION_NAME = [^0-9]*[0-9]*[^0-9]*.[^0-9]*/VERSION_NAME = "\""${new_version_name}"\""/g" "${GRADLE_FILE}"
+      ${DRY_RUN} sed -i '' "s/VERSION_NAME = \"[0-9.]*\"/VERSION_NAME = "\""${new_version_name}"\""/g" "${GRADLE_FILE}"
     else
-      ${DRY_RUN} sed -i "s/VERSION_NAME = [^0-9]*[0-9]*[^0-9]*.*[^0-9]*/VERSION_NAME = "\""${new_version_name}"\""/g" "${GRADLE_FILE}"
+      ${DRY_RUN} sed -i "s/VERSION_NAME = \"[0-9.]*\"/VERSION_NAME = "\""${new_version_name}"\""/g" "${GRADLE_FILE}"
     fi
 
     ## Commit new version name.
@@ -128,7 +128,7 @@ function shouldUpdateVersionName(){
 
 function pushChanges() {
   echo "Pushing changes to ${RELEASE_BRANCH}..."
-  ${DRY_RUN} git push origin "${RELEASE_BRANCH}"
+#  ${DRY_RUN} git push origin "${RELEASE_BRANCH}"
 }
 
 function getReleaseMajorVersionFromGradle(){
@@ -151,7 +151,7 @@ function tagReleaseBranch() {
   tag="alpha/android_${versionName}(${VERSION_CODE})"
 
   ${DRY_RUN} git tag -a "${tag}" -m "v=${versionName}(${VERSION_CODE})"
-  ${DRY_RUN} git push origin "${tag}"
+#  ${DRY_RUN} git push origin "${tag}"
 }
 
 function getReleaseVersionMinorFromTag(){
