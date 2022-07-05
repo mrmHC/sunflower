@@ -28,7 +28,7 @@ pushd $BASEDIR
 
 DRY_RUN=""
 RELEASE_BRANCH=$(git branch --show-current)
-GRADLE_FILE="./KayakTravelApp/build.gradle"
+GRADLE_FILE="./app/build.gradle"
 VERSION_CODE=""
 
 if [[ "$RELEASE_BRANCH" =~ ^release/android_*$ ]]; then
@@ -54,7 +54,7 @@ while [ "$1" != "" ]; do
   shift
 done
 
-source ./scripts/bamboo/bamboo_release_common.sh
+source ./app/bamboo_release_common.sh
 
 function getGradleVersionName(){
   gradleVersionNameTmp=$(grep -m1 ' VERSION_NAME = "[0-9.]*"' ${GRADLE_FILE})
