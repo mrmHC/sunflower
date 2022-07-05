@@ -21,7 +21,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
 
-def VERSION_CODE = 10028
+def VERSION_CODE = 10029
 def VERSION_NAME = "159.0"
 
 android {
